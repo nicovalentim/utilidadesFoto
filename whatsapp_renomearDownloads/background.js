@@ -123,5 +123,5 @@ function criarNomeArquivo(nomeOriginal, numeroTel) {
   const dataFormatada =
     `${dia}-${mes}-${ano}_${hora}-${minuto}-${segundo}`;
 
-  return `wpp_${numeroTel}_${dataFormatada}${extension}`;
+  return `wpp_${dataFormatada}_${numeroTel}${extension}`;
 }
