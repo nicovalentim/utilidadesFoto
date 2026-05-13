@@ -1,1 +1,0 @@
-net use y: \\Laboratorio\Laboratorio /persistent:yes
