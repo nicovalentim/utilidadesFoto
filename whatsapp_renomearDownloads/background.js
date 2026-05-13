@@ -35,8 +35,8 @@ function limparContato(input) {
   }
 
 function criarNomeArquivo(nomeOriginal, contato) {
-  const extensaoMatch = nomeOriginal.match(/(\.[^.]+)$/);      // remove extensão
-  const extensao = extensaoMatch ? extensaoMatch[2] : "";
+  const extensaoMatch = nomeOriginal.match(/\.[^.]+$/);
+  const extensao = extensaoMatch ? extensaoMatch[0] : "";
 
   const agora = new Date();
 
