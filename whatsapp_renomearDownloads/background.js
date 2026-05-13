@@ -9,14 +9,14 @@ chrome.runtime.onMessage.addListener((msg, sender) => {
     return;
   }
 
-  const numeroLimpo = limparContato(msg.contact);
+  const contato = limparContato(msg.contact);
 
-  if (!numeroLimpo) {
+  if (!contato) {
     return;
   }
 
   intencaoDownload.push({
-    contact: numeroLimpo,
+    contact: contato,
     timestamp: msg.timestamp,
     tabId: sender.tab.id
   });
@@ -98,7 +98,7 @@ function limparContato(input) {
     .replace(/_+/g, "_");
 }
 
-function criarNomeArquivo(nomeOriginal, numeroTel) {
+function criarNomeArquivo(nomeOriginal, contato) {
 
   const extensionMatch = nomeOriginal.match(/\.[^.]+$/);      // remove extensão
   const extension = extensionMatch ? extensionMatch[0] : "";
@@ -121,7 +121,11 @@ function criarNomeArquivo(nomeOriginal, numeroTel) {
   const segundo = String(agora.getSeconds()).padStart(2, "0");
 
   const dataFormatada =
-    `${dia}-${mes}-${ano}_${hora}-${minuto}-${segundo}`;
+    `dia ${dia}-${mes} na hora ${hora}-${minuto}-${segundo}`;
 
-  return `wpp_${dataFormatada}_${numeroTel}${extension}`;
+  const contatoFormatado = /^\d+$/.test(contato) 
+  ? contato.slice(-4) 
+  : contato;
+
+  return `Whats ${contatoFormatado} (baixado no ${dataFormatada}) ${extension}`;
 }
