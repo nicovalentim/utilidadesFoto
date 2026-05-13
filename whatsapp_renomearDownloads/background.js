@@ -42,6 +42,10 @@ for (const intent of intencaoDownload) {
 
   const delta = Math.abs(hora - intent.timestamp);
 
+    if (delta > 8000) {
+      continue;
+    }
+
       if (delta < bestDelta) {
         bestDelta = delta;
         bestMatch = intent;
@@ -106,5 +110,18 @@ function criarNomeArquivo(nomeOriginal, numeroTel) {
   nomeBase = nomeBase.replace(/[<>:"/\\|?*]/g, "");
   nomeBase = nomeBase.replace(/_+/g, "_");
 
-  return `wpp_${numeroTel}${extension}`;
+  const agora = new Date();
+
+  const dia = String(agora.getDate()).padStart(2, "0");
+  const mes = String(agora.getMonth() + 1).padStart(2, "0");
+  const ano = String(agora.getFullYear()).slice(-2);
+
+  const hora = String(agora.getHours()).padStart(2, "0");
+  const minuto = String(agora.getMinutes()).padStart(2, "0");
+  const segundo = String(agora.getSeconds()).padStart(2, "0");
+
+  const dataFormatada =
+    `${dia}-${mes}-${ano}_${hora}-${minuto}-${segundo}`;
+
+  return `wpp_${numeroTel}_${dataFormatada}${extension}`;
 }
