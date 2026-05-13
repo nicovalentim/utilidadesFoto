@@ -1,0 +1,231 @@
+; 記述方法
+; ・0カラム目から "[" + 4桁の16進数値 + "]" の指定で、指定番号のコンテンツ
+;   データ開始を示します。
+; ・文章中に "{" + BGR 16進数コード6桁 + "C}" で囲んだ文字列があると、RGB 
+;   の色コードとしてその後の文字の色を変更します。
+;   ただし、改行を行うと、黒に戻ります。
+; ・文章中に "{" + BGR 16進数コード6桁 + "B}" で囲んだ文字列があると、RGB 
+;   の色コードとしてその後の文字の背景色を変更します。
+;   背景色に、FFFFFF を与えるとデフォルト色に戻します。
+;   また、改行を行うと、デフォルトの色に戻ります。
+
+
+[0001][EN]
+{008000C}SUCCESS
+The network condition is {FFFF00B}normal{FFFFFFB}.
+
+[0001][JP]
+{008000C}正常
+ネットワーク状態は{FFFF00B}正常{FFFFFFB}です。
+
+[0010][EN]
+{0000FFC}Abnormal
+PC's ARCNET Control PCB is not installed.
+Possible causes for the problem are as follows:
+  - PCB is not installed. 
+  - Device Driver to Control PCB is not installed. 
+  - Device Driver to Control PCB did not
+    process correctly. 
+
+[0010][JP]
+{0000FFC}異常
+PCのARCNET制御用基板が
+搭載されていません。
+以下の原因が考えられます。
+　・基板が搭載されていない。
+　・基板制御用のデバイスドライバーがインストール
+    されていない
+　・基板制御用のデバイスドライバーが正常に動作
+    していない
+
+[0011][EN]
+{0000FFC}Abnormal
+Undefined error has occurred
+on the PC's ARCNET Control PCB.
+
+[0011][JP]
+{0000FFC}異常
+PCのARCNET制御用基板の制御において
+未定義のエラーが発生しました。
+
+[0012][EN]
+{0000FFC}Abnormal
+The DIP switch setting is wrong
+on the PC's ARCNET Control PCB.
+
+[0012][JP]
+{0000FFC}異常
+PCのARCNET制御用基板の
+ディップスイッチ設定が間違っています。
+
+[0013][EN]
+{0000FFC}Abnormal
+The DIP switch setting is overlapped
+on the PC's ARCNET Control PCB.
+
+[0013][JP]
+{0000FFC}異常
+PCのARCNET制御用基板の
+ディップスイッチ設定が重複しています。
+
+[0014][EN]
+{0000FFC}Abnormal
+Failed to access the PC's ARCNET Control PCB.
+Possible causes for the problem are as follows:
+ - Device Driver to Control PCB is not installed. 
+ - Device Driver to Control PCB did not
+   process correctly. 
+ - Self-diagnostic program has some problem. 
+
+[0014][JP]
+{0000FFC}異常
+PCのARCNET制御用基板の
+アクセスに失敗しました。
+以下の原因が考えられます。
+　・基板制御用のデバイスドライバーがインストール
+    されていない
+　・基板制御用のデバイスドライバーが正常に動作
+    していない
+　・自己診断プログラムの不具合
+
+[0015][EN]
+{0000FFC}Abnormal
+Failed to access the PC's ARCNET Control PCB.
+Possible causes for the problem are as follows: 
+ - The version of application program
+   does not match that of Device Driver. 
+ - Self-diagnostic program has some problem. 
+ - Device Driver has some problem. 
+
+[0015][JP]
+{0000FFC}異常
+PCのARCNET制御用基板の
+アクセスに失敗しました。
+以下の原因が考えられます。
+　・アプリケーションプログラムとデバイス
+    ドライバーのバージョン不一致
+　・自己診断プログラムの不具合
+　・デバイスドライバーの不具合
+
+[0016][EN]
+{0000FFC}Abnormal
+ARCNET chip on the PC's ARCNET Control PCB
+is abnormal.
+Possible cause for the problem is as follows: 
+  - The PCB is defective.
+
+[0016][JP]
+{0000FFC}異常
+PCのARCNET制御用基板の
+ARCNETチップが異常です。
+以下の原因が考えられます。
+　・基板不良
+
+[0020][EN]
+{0000FFC}Abnormal
+The ARCNET line state is poor.
+Confirm the following: 
+ - Selected Model
+ - ARCNET cable connection 
+ - ARCNET cable for dirt 
+ - ARCNET cable connector for dirt 
+
+If the line state is still poor, 
+possible cause of the problem is 
+malfunction of the PCB
+on which ARCNET Chip is installed. 
+
+[0020][JP]
+{0000FFC}異常
+ARCNET回線状態が異常です。
+以下の確認が必要です。
+　・選択している機種名
+　・ARCNETケーブルの接続状態
+　・ARCNETケーブルの汚れ
+　・ARCNETケーブルコネクタの汚れ
+
+上記確認を行っても異常になる場合は、
+ARCNETチップを搭載している基板の異常が
+考えられます。
+
+[0021][EN]
+{0000FFC}Abnormal
+An ARCNET connection device, 
+not for the current model was detected.
+Confirm the following items.
+ - Selected model
+ - Device connected with ARCNET line
+ - ARCNET cable connection 
+ - ARCNET cable for dirt 
+ - ARCNET cable connector for dirt 
+
+If the connection is still poor, 
+possible cause for the problem is 
+a malfunction of the PCB 
+on which ARCNET chip is installed. 
+
+[0021][JP]
+{0000FFC}異常
+選択している機種に存在しない
+ARCNET接続機器を検出しました。
+以下の確認が必要です。
+　・選択している機種名
+　・ARCNET回線に接続されている機器
+　・ARCNETケーブルの接続状態
+　・ARCNETケーブルの汚れ
+　・ARCNETケーブルコネクタの汚れ
+
+上記確認を行っても異常になる場合は、
+ARCNETチップを搭載している基板の異常が
+考えられます。
+
+[0022][EN]
+{0000FFC}Abnormal
+Communication is incorrect
+with all the connected ARCNET devices.
+Confirm the following items.
+ - Selected [Model]
+ - ARCNET cable connection to the PC
+ - ARCNET cable connection to the PCB with HUB
+ - ARCNET cable connection 
+ - ARCNET cable for dirt 
+ - ARCNET cable connector for dirt 
+
+If the connection is still poor, 
+possible cause for the problem is 
+malfunction of the PCB
+on which ARCNET chip is installed.
+
+[0022][JP]
+{0000FFC}異常
+すべてのARCNET接続機器と通信が異常です。
+以下の確認が必要です。
+　・選択している機種名
+　・PCへのARCNETケーブルの接続状態
+　・ハブ機能を搭載している基板への
+　　ARCNETケーブルの接続状態
+　・ARCNETケーブルの接続状態
+　・ARCNETケーブルの汚れ
+　・ARCNETケーブルコネクタの汚れ
+
+上記確認を行っても異常になる場合は、
+ARCNETチップを搭載している基板の異常が
+考えられます。
+
+[0100][EN]
+{0000FFC}Interrupted
+The diagnostic was interrupted. 
+The diagnostic for all of the nodes was not
+completed. Extend the diagnostic time.
+
+[0100][JP]
+{0000FFC}中断
+診断を中断しました。
+すべてのノードに対して診断が完了していません。
+診断時間を長くしてください。
+
+[0000]
+この番号は、実行中の番号の為、この番号が表示する対象になることはありません。
+※ この後ろに定義を記述してはいけません。
+   EOF 判定を誤る可能性があります。
+
