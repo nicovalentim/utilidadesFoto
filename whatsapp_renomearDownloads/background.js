@@ -1,120 +1,47 @@
-const intencaoDownload = [];
-chrome.runtime.onMessage.addListener((msg, sender) => {
-
-  if (msg.type !== "DOWNLOAD_INTENT") {
-    return;
-  }
-
-  if (!sender.tab) {
-    return;
-  }
-
-  const contato = limparContato(msg.contact);
-
-  if (!contato) {
-    return;
-  }
-
-  intencaoDownload.push({
-    contact: contato,
-    timestamp: msg.timestamp,
-    tabId: sender.tab.id
-  });
-
-  if (intencaoDownload.length > 30) {
-    intencaoDownload.shift();
-  }
-});
-
-chrome.downloads.onDeterminingFilename.addListener((baixado, suggest) => {
-
-  if (!baixado.filename.toLowerCase().includes("whatsapp")) {
-    suggest();
-    return;
-  }
-
-  const hora = Date.now();
-  let bestMatch = null;
-  let bestDelta = Infinity;               // Smaller delta = better match
-                                          // Testando essa variável para evitar renomear arquivos antigos
-
-for (const intent of intencaoDownload) {
-
-  const delta = Math.abs(hora - intent.timestamp);
-
-    if (delta > 8000) {
-      continue;
+let ultimoContato = null;
+  chrome.runtime.onMessage.addListener((msg) => {
+    if (msg.type === "DOWNLOAD_INTENT") {
+      ultimoContato = {
+        name: limparContato(msg.contact),
+        time: msg.timestamp
+      };
     }
-
-      if (delta < bestDelta) {
-        bestDelta = delta;
-        bestMatch = intent;
-      }
-  }
-
-  if (!bestMatch) {
-    suggest();
-    return;
-  }
-
-  const novoNome = criarNomeArquivo(
-    baixado.filename,
-    bestMatch.contact
-  );
-
-  const caminhoOriginal = baixado.filename;
-
-  const pasta = caminhoOriginal.includes("/")
-    ? caminhoOriginal.substring(
-        0,
-        caminhoOriginal.lastIndexOf("/") + 1
-      )
-    : "";
-
-  suggest({
-    filename: pasta + novoNome
   });
-});
+
+  chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
+    const now = Date.now();
+    
+    if (ultimoContato && (now - ultimoContato.time) < 8000) {
+      const novoNome = criarNomeArquivo(item.filename, ultimoContato.name);
+      suggest({ filename: novoNome });
+    } else {
+      suggest();
+    }
+  });
 
 function limparContato(input) {
+  if (!input) return "desconhecido";
 
-  if (!input) {
-    return null;
-  }
-
-  const digits = input.replace(/\D/g, "");
-
-  if (digits.length >= 8) {
-    return digits;
-  }
+  const digitos = input.replace(/\D/g, "");
+  if (digitos.length >= 8) return digitos;
 
   return input
     .trim()
-    .toLowerCase()
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/\s+/g, "_")
-    .replace(/[^\w]/g, "")
-    .replace(/_+/g, "_");
-}
+    .replace(/[\u0300-\u036f]/g, "")    // remove acentos
+    .replace(/[^\w\s-]/g, "")           // remove tudo que não for hífen, texto ou espaço
+    .replace(/\s+/g, "_")               // transforma espaço em _
+    .toLowerCase()
+  }
 
 function criarNomeArquivo(nomeOriginal, contato) {
-
-  const extensionMatch = nomeOriginal.match(/\.[^.]+$/);      // remove extensão
-  const extension = extensionMatch ? extensionMatch[0] : "";
-
-  let nomeBase = nomeOriginal
-    .replace(/\.[^.]+$/, "")            // Remove a extensão
-    .replace(/^whatsapp|[\s+]/gi, "_")  // Troca "whatsapp" (no início), espaços e "+" por "_"
-    .replace(/[<>:"/\\|?*]/g, "")       // Remove caracteres proibidos pelo Windows
-    .toLowerCase();
+  const extensaoMatch = nomeOriginal.match(/(\.[^.]+)$/);      // remove extensão
+  const extensao = extensaoMatch ? extensaoMatch[2] : "";
 
   const agora = new Date();
 
   const dia = String(agora.getDate()).padStart(2, "0");
   const mes = String(agora.getMonth() + 1).padStart(2, "0");
-  const ano = String(agora.getFullYear()).slice(-2);
-
   const hora = String(agora.getHours()).padStart(2, "0");
   const minuto = String(agora.getMinutes()).padStart(2, "0");
   const segundo = String(agora.getSeconds()).padStart(2, "0");
@@ -126,5 +53,5 @@ function criarNomeArquivo(nomeOriginal, contato) {
   ? contato.slice(-4) 
   : contato;
 
-  return `${contatoFormatado} (${dataFormatada})${extension}`;
+  return `${contatoFormatado} (${dataFormatada})${extensao}`;
 }

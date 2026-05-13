@@ -1,19 +1,15 @@
 function extrairContato() {
-
   /* versão 1 */
   const header = document.querySelector(
     '[data-testid="conversation-info-header"]'
   );
 
   if (header && header.innerText) {
-
     const texto = header.innerText
       .split("\n")[0]
       .trim();
 
-    if (texto.length > 0) {
-      return texto;
-    }
+    if (texto.length > 0) return texto;
   }
 
   /* versão 2, caso a 1 falhe */
@@ -22,12 +18,10 @@ function extrairContato() {
   if (title) {
 
     const nome = title
-      .replace(/\s*\|?\s*WhatsApp\s*/i, "")
+      .replace(/ \s* \|? \s* WhatsApp \s* /i, "")
       .trim();
 
-    if (nome.length > 0) {
-      return nome;
-    }
+    if (nome.length > 0) return nome;
   }
 
   return null;
@@ -35,10 +29,7 @@ function extrairContato() {
 
 function existeDownload() {
   const contato = extrairContato();
-
-  if (!contato) {
-    return;
-  }
+  if (!contato) return;
 
   chrome.runtime.sendMessage({
     type: "DOWNLOAD_INTENT",
@@ -48,20 +39,13 @@ function existeDownload() {
 }
 
 document.addEventListener("click", (event) => {
-
   const target = event.target;
-
-  if (!target) {
-    return;
-  }
+  if (!target) return;
 
   const botao = target.closest(
     'button, [role="button"], [data-testid]'
   );
-
-  if (!botao) {
-    return;
-  }
+  if (!botao) return;
 
   const aria =
     (botao.getAttribute("aria-label") || "")
