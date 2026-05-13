@@ -120,11 +120,11 @@ function criarNomeArquivo(nomeOriginal, contato) {
   const segundo = String(agora.getSeconds()).padStart(2, "0");
 
   const dataFormatada =
-    `dia ${dia}-${mes} na hora ${hora}-${minuto}-${segundo}`;
+    `${dia}-${mes} às ${hora}-${minuto}-${segundo}`;
 
   const contatoFormatado = /^\d+$/.test(contato) 
   ? contato.slice(-4) 
   : contato;
 
-  return `Whats ${contatoFormatado} (baixado no ${dataFormatada}) ${extension}`;
+  return ${contatoFormatado} (${dataFormatada})${extension}`;
 }
