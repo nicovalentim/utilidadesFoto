@@ -5,7 +5,7 @@ Script simples que funciona como extensão do chrome para renomear arquivos com 
 1. baixe a versão zipada do repositório;
 2. dentro do Chrome, abra [a aba de extensões](chrome://extensions);
 3. entre no Modo de Desenvolvedor / Developer Mode;
-4. Clique em carregar fora de pacote / load unpacked, e escolha a pasta;
+4. Clique em carregar sem compatação / load unpacked, e escolha a pasta;
 5. Recarregue o WhatsApp Web.
 
 # Lógica da arquitetura 
