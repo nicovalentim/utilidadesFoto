@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+
+  "name": "Renomear Downloads do WhatsApp Web",
+  "version": "2.0",
+
+  "description": "Renomeia arquivos baixados do WhatsApp Web para incluir o número do contato.",
+
+  "permissions": [
+    "downloads",
+    "storage",
+    "scripting"
+  ],
+
+  "host_permissions": [
+    "https://web.whatsapp.com/*"
+  ],
+
+  "background": {
+    "service_worker": "background.js"
+  },
+
+  "content_scripts": [
+    {
+      "matches": [
+        "https://web.whatsapp.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}
