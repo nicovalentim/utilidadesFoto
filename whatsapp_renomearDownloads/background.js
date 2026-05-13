@@ -103,12 +103,11 @@ function criarNomeArquivo(nomeOriginal, contato) {
   const extensionMatch = nomeOriginal.match(/\.[^.]+$/);      // remove extensão
   const extension = extensionMatch ? extensionMatch[0] : "";
 
-  let nomeBase = nomeOriginal.replace(/\.[^.]+$/, "");
-  nomeBase = nomeBase.replace(/^whatsapp/i, "");
-  nomeBase = nomeBase.replace(/\s+/g, "_");
-  nomeBase = nomeBase.toLowerCase();
-  nomeBase = nomeBase.replace(/[<>:"/\\|?*]/g, "");
-  nomeBase = nomeBase.replace(/_+/g, "_");
+  let nomeBase = nomeOriginal
+    .replace(/\.[^.]+$/, "")            // Remove a extensão
+    .replace(/^whatsapp|[\s+]/gi, "_")  // Troca "whatsapp" (no início), espaços e "+" por "_"
+    .replace(/[<>:"/\\|?*]/g, "")       // Remove caracteres proibidos pelo Windows
+    .toLowerCase();
 
   const agora = new Date();
 
