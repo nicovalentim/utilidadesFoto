@@ -126,5 +126,5 @@ function criarNomeArquivo(nomeOriginal, contato) {
   ? contato.slice(-4) 
   : contato;
 
-  return ${contatoFormatado} (${dataFormatada})${extension}`;
+  return `${contatoFormatado} (${dataFormatada})${extension}`;
 }
