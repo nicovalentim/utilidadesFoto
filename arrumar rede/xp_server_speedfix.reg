@@ -1,0 +1,110 @@
+Windows Registry Editor Version 5.00
+
+; ==============================================
+;  XP / Legacy SMB Performance Fixes for Windows 10 Server
+;  Purpose: Improve first-connection speed, reduce SMB latency,
+;  and extend cached sessions for older XP clients.
+; ==============================================
+
+; --- Allow fast LM/NTLM authentication (XP-compatible) ---
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa]
+"LmCompatibilityLevel"=dword:00000001
+
+; --- Disable SMB signing to reduce authentication delay ---
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters]
+"RequireSecuritySignature"=dword:00000000
+"EnableSecuritySignature"=dword:00000000
+
+; --- Ensure SMB1 server component stays enabled (XP needs it) ---
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters]
+"SMB1"=dword:00000001
+
+; --- Disable Remote Differential Compression (RDC) overhead ---
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System]
+"EnableRDC"=dword:00000000
+
+; --- Disable Link-Local Multicast Name Resolution (optional) ---
+; Prevents unnecessary local discovery delays (you can still connect via IP)
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient]
+"EnableMulticast"=dword:00000000
+
+; ==============================================
+;  Extended SMB Session & Directory Cache Tuning
+; ==============================================
+
+; These values control how long SMB sessions, handles, and directory listings
+; remain cached before Windows closes them. Increases responsiveness when reopening
+; the share after short idle periods (default is much lower).
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters]
+; Keep idle sessions alive longer (seconds) – 1 hour = 3600
+"Autodisconnect"=dword:00007080
+
+; Increase cached open handles and directory info
+"CachedOpenLimit"=dword:00001000
+"DormantFileLimit"=dword:00001000
+"ScavengerTimeLimit"=dword:00000078
+
+; Improve overall LAN browse speed
+"EnableOplocks"=dword:00000001
+"EnableOpLocks"=dword:00000001
+"EnableForcedLogOff"=dword:00000000
+
+Windows Registry Editor Version 5.00
+
+; ==============================================
+; XP / Legacy SMB Performance Fixes — Windows 10 Server
+; ==============================================
+
+; --- Allow fast LM/NTLM authentication (XP-compatible) ---
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa]
+"LmCompatibilityLevel"=dword:00000001
+
+; --- Disable SMB signing to reduce authentication latency ---
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters]
+"RequireSecuritySignature"=dword:00000000
+"EnableSecuritySignature"=dword:00000000
+
+; --- Ensure SMB1 server (for XP clients) ---
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters]
+"SMB1"=dword:00000001
+
+; --- Disable Remote Differential Compression overhead (RDC) ---
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System]
+"EnableRDC"=dword:00000000
+
+; --- Disable Link-Local Multicast Name Resolution (optional) ---
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient]
+"EnableMulticast"=dword:00000000
+
+; ==============================================
+; Extended SMB Session & Directory Cache Tuning
+; ==============================================
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters]
+; Keep idle sessions alive longer (seconds) — 3600 = 1 hour
+"Autodisconnect"=dword:00000E10
+
+; Increase cached open handles and directory info
+"CachedOpenLimit"=dword:00001000
+"DormantFileLimit"=dword:00001000
+; scavenger time limit (seconds)
+"ScavengerTimeLimit"=dword:00000078
+
+; Oplocks (enable by default for performance)
+"EnableOplocks"=dword:00000001
+"EnableOpLocks"=dword:00000001
+"EnableForcedLogOff"=dword:00000000
+
+; =================================================
+; Optional: disable discovery services that cause extra LAN chatter
+; (these keys set the Service Start type to Disabled (4))
+; =================================================
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\FDResPub]
+"Start"=dword:00000004
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SSDPSRV]
+"Start"=dword:00000004
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\upnphost]
+"Start"=dword:00000004
+

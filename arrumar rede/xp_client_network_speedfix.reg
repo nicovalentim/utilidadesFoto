@@ -1,0 +1,85 @@
+Windows Registry Editor Version 5.00
+
+; =====================================================
+;  Windows XP Client LAN / SMB Performance Tweaks
+;  Purpose: Speed up access to modern SMB servers
+;  (Win10, NAS, etc.) and avoid long first-open delays
+; =====================================================
+
+; --- Disable automatic search for shared printers and network folders ---
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"AutoShareWks"=dword:00000000
+"WebViewBarricade"=dword:00000001
+"ServerAdminUI"=dword:00000001
+"SearchForPrinters"=dword:00000000
+"NoNetCrawling"=dword:00000001
+
+; --- Disable recent-folder “last access” timestamps to reduce metadata requests ---
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem]
+"NtfsDisableLastAccessUpdate"=dword:00000001
+
+; --- Speed up SMB negotiation ---
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters]
+; disable opportunistic locking bugs, but keep cache on
+"EnableOplocks"=dword:00000001
+; disable large write delay heuristics
+"UseWriteRawMode"=dword:00000001
+; keep sessions longer before reconnecting
+"KeepConn"=dword:00000E10
+
+; --- Disable NetBIOS name broadcasts (optional if using static IPs) ---
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\NetBT\Parameters]
+"NoNameReleaseOnDemand"=dword:00000001
+"EnableLMHOSTS"=dword:00000000
+
+; --- Disable Windows Messenger service popups / name resolution chatter ---
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Messenger]
+"Start"=dword:00000004
+
+; --- Disable automatic scheduled tasks enumeration over LAN ---
+[HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Explorer\RemoteComputer\NameSpace\{D6277990-4C6A-11CF-8D87-00AA0060F5BF}]
+@="-"
+
+Windows Registry Editor Version 5.00
+
+; =====================================================
+; Windows XP Client LAN / SMB Performance Tweaks
+; =====================================================
+
+; --- Disable automatic search for shared printers and network folders ---
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"AutoShareWks"=dword:00000000
+"WebViewBarricade"=dword:00000001
+"ServerAdminUI"=dword:00000001
+"SearchForPrinters"=dword:00000000
+"NoNetCrawling"=dword:00000001
+
+; --- Disable NTFS last-access updates to reduce metadata IO ---
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem]
+"NtfsDisableLastAccessUpdate"=dword:00000001
+
+; --- Speed up SMB workstation (client) negotiation ---
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters]
+"EnableOplocks"=dword:00000001
+"UseWriteRawMode"=dword:00000001
+; Keep SMB connections alive longer (seconds) — 3600 = 1 hour
+"KeepConn"=dword:00000E10
+
+; --- Reduce the session connect timeout (avoid long fallback waits) ---
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters]
+"SessTimeout"=dword:0000000A
+
+; --- NetBT / NetBIOS related tweaks (optional; helps when using static IP or mapping by IP) ---
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\NetBT\Parameters]
+"NoNameReleaseOnDemand"=dword:00000001
+"EnableLMHOSTS"=dword:00000000
+
+; --- Disable Messenger service popup / name-chatter ---
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Messenger]
+"Start"=dword:00000004
+
+; --- Prevent Remote Computer scheduled task enumeration (reduce LAN queries) ---
+; Removing the RemoteComputer NameSpace entry (set value to "-" to hide)
+[HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Explorer\RemoteComputer\NameSpace\{D6277990-4C6A-11CF-8D87-00AA0060F5BF}]
+@="-"
+
